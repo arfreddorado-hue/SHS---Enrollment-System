@@ -1,24 +1,29 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
-from utils import display_background, make_layout
+from utils import make_layout
 
 
 def student_dashboard(student_data=None):
     root = tk.Tk()
     root.title("Student Dashboard - SHS Enrollment System")
     make_layout(root)
-    display_background(root)
+
+    # Set fullscreen mode
+    root.state('zoomed')
+
     bg_color = '#800000'
 
-    # Main window frame
+    # Main window frame - now fills entire window
     dashboard_frame = tk.Frame(root, highlightbackground='maroon',
                                highlightthickness=3, background='white')
+    dashboard_frame.pack(fill='both', expand=True)
 
     # Header
     heading_lb = tk.Label(
         dashboard_frame,
-        text=f"{student_data.get('grade_level')} & {student_data.get('section')}",
+        # text=f"{student_data.get('grade_level')} & {student_data.get('section')}",
+        text=f"Student Dashboard",
         bg=bg_color, fg="white",
         font=("Bold", 18)
     )
@@ -27,7 +32,8 @@ def student_dashboard(student_data=None):
     # Adviser name
     adviser_lb = tk.Label(
         dashboard_frame,
-        text=f"({student_data.get('adviser')})",
+        # text=f"({student_data.get('adviser')})",
+        text=f"Created by: Arfred",
         bg=bg_color, fg="white",
         font=("Arial", 12)
     )
@@ -115,20 +121,6 @@ def student_dashboard(student_data=None):
     )
     status_label.pack(pady=(0, 10))
 
-    # Buttons
-    edit_btn = tk.Button(
-        left_frame,
-        text="Edit Profile",
-        font=('Arial', 11),
-        bg='#800000',
-        fg='white',
-        command=lambda: edit_profile(student_data),
-        width=15,
-        bd=0,
-        cursor='hand2'
-    )
-    edit_btn.pack(pady=5)
-
     dropout_btn = tk.Button(
         left_frame,
         text="Drop Out",
@@ -170,8 +162,7 @@ def student_dashboard(student_data=None):
     tk.Label(table_header, text="TEACHER", bg='#800000', fg='white',
              font=("Bold", 11), width=20, anchor='w', padx=5).pack(side='left', fill='x', expand=True)
 
-
-    canvas = tk.Canvas(right_frame, bg="white", highlightthickness=0, height=400)
+    canvas = tk.Canvas(right_frame, bg="white", highlightthickness=0)
     scrollbar = ttk.Scrollbar(right_frame, orient="vertical", command=canvas.yview)
     scrollable_frame = tk.Frame(canvas, bg="white")
 
@@ -219,14 +210,18 @@ def student_dashboard(student_data=None):
             tk.Label(col3_frame, text="", bg='white', font=("Arial", 10),
                      anchor='w', padx=5).pack(fill='both', expand=True)
 
-
-
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
 
-    # Footer note REMOVED - grid extends to fill the space
-
-    dashboard_frame.place(relx=0.5, rely=0.5, anchor="center", width=900, height=600)
+    # Add disclaimer in the middle - always visible
+    disclaimer_label = tk.Label(
+        right_frame,
+        text="(Disclaimer!! For future implementation)",
+        font=("Arial", 14),
+        fg="red",
+        bg="white"
+    )
+    disclaimer_label.place(relx=0.5, rely=0.5, anchor='center')
 
     root.mainloop()
 
