@@ -3,21 +3,24 @@ from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 
 from services.admin_service import fetch_students, approve_student_request, reject_student_approval
-from utils import display_background, make_layout, make_icon
+from utils import make_layout, make_icon
 
 
 def admin_dashboard(admin_data=None):
     root = tk.Tk()
     root.title("Admin Dashboard - SHS Enrollment System")
     make_layout(root)
-    display_background(root)
+
+    root.state('zoomed')
+
     bg_color = '#800000'
 
     student_data = fetch_students()
 
-    # Main window frame
+    # Main window frame - now fills entire window
     dashboard_frame = tk.Frame(root, highlightbackground='maroon',
                                highlightthickness=3, background='white')
+    dashboard_frame.pack(fill='both', expand=True)
 
     # Header
     heading_lb = tk.Label(
@@ -99,7 +102,7 @@ def admin_dashboard(admin_data=None):
              font=("Bold", 10), width=26, anchor='center').pack(side='left', padx=1)
 
     # Scrollable frame for students
-    canvas = tk.Canvas(content_frame, bg="white", highlightthickness=0, height=350)
+    canvas = tk.Canvas(content_frame, bg="white", highlightthickness=0)
     scrollbar = ttk.Scrollbar(content_frame, orient="vertical", command=canvas.yview)
     scrollable_frame = tk.Frame(canvas, bg="white")
 
@@ -276,8 +279,8 @@ def admin_dashboard(admin_data=None):
     stats_label.pack()
     update_stats()
 
-    dashboard_frame.place(relx=0.5, rely=0.5, anchor="center", width=950, height=600)
     root.mainloop()
+
 
 def logout(root):
     """Handle logout action"""
